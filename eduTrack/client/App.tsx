@@ -5,6 +5,8 @@ import { AuthProvider } from './src/contexts/AuthContext';
 import { StudentProvider } from './src/contexts/StudentContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import { COLORS } from './src/utils/constants';
+import 'react-native-url-polyfill/auto';
+
 
 export default function App() {
   return (
