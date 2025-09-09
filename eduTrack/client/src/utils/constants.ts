@@ -1,6 +1,6 @@
 // API Configuration
 export const API_BASE_URL = __DEV__
-  ? 'http://192.168.1.14:5000/api' // Thay IP này bằng IP máy tính của bạn
+  ? 'http://192.168.1.50:5000/api' // Thay IP này bằng IP máy tính của bạn
   : 'https://your-deployed-backend.com/api';
 
 // Storage Keys

@@ -36,7 +36,7 @@ const StudentDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const [gradeForm, setGradeForm] = useState({
     subject: '',
     score: '',
-    type: 'homework' as 'homework' | 'test' | 'exam',
+    type: 'homework' as 'homework' | 'test' | 'exam' | 'project' | 'performance' | 'practical' | 'essay',
   });
 
   useEffect(() => {

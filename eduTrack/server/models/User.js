@@ -32,16 +32,39 @@ const userSchema = new mongoose.Schema({
 
 // Hash password trước khi save
 userSchema.pre('save', async function(next) {
+  // Only hash if password is modified (and not already hashed)
   if (!this.isModified('password')) return next();
   
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
+  try {
+    console.log('Pre-save: Original password:', this.password);
+    
+    // Check if password is already hashed (bcrypt hashes start with $2a$, $2b$, or $2y$)
+    if (this.password.match(/^\$2[aby]\$/)) {
+      console.log('Password already hashed, skipping...');
+      return next();
+    }
+    
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    console.log('Pre-save: Hashed password:', this.password);
+    next();
+  } catch (error) {
+    console.error('Pre-save error:', error);
+    next(error);
+  }
 });
 
 // Method để compare password
 userSchema.methods.comparePassword = async function(candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
+  try {
+    console.log('Comparing:', candidatePassword, 'with hash:', this.password);
+    const result = await bcrypt.compare(candidatePassword, this.password);
+    console.log('Comparison result:', result);
+    return result;
+  } catch (error) {
+    console.error('Compare password error:', error);
+    return false;
+  }
 };
 
 module.exports = mongoose.model('User', userSchema);
