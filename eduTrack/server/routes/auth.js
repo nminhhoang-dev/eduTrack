@@ -31,7 +31,7 @@ router.post('/register', async (req, res) => {
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: '1d' }
     );
 
     res.status(201).json({
@@ -55,16 +55,29 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log('Login attempt:', { email, password: '***' });
 
     // Kiểm tra user tồn tại
     const user = await User.findOne({ email });
+    console.log('User found:', !!user);
+    
     if (!user) {
+      console.log('User not found in database');
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
+    console.log('User in DB:', {
+      email: user.email,
+      hasPassword: !!user.password,
+      passwordLength: user.password?.length
+    });
+
     // Kiểm tra password
     const isMatch = await user.comparePassword(password);
+    console.log('Password match result:', isMatch);
+    
     if (!isMatch) {
+      console.log('Password does not match');
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
@@ -72,8 +85,10 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: '1d' }
     );
+
+    console.log('Login successful for:', user.email);
 
     res.json({
       message: 'Login successful',
@@ -87,7 +102,7 @@ router.post('/login', async (req, res) => {
       }
     });
   } catch (error) {
-    console.error(error);
+    console.error('Login error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });

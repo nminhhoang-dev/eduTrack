@@ -13,7 +13,7 @@ const gradeSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['homework', 'test', 'exam'],
+    enum: ['test', 'exam', 'homework', 'project', 'performance', 'practical', 'essay'],
     default: 'homework'
   },
   date: {
