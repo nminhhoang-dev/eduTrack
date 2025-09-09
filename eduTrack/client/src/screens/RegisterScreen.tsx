@@ -129,7 +129,6 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
               >
                 <Picker.Item label="Parent" value="parent" />
                 <Picker.Item label="Teacher" value="teacher" />
-                <Picker.Item label="Student" value="student" />
               </Picker>
             </View>
 
