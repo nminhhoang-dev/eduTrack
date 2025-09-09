@@ -189,8 +189,8 @@ const DashboardScreen: React.FC<Props> = ({ navigation }) => {
           </>
         )}
 
-        {/* Parent/Student Dashboard */}
-        {(authState.user?.role === 'parent' || authState.user?.role === 'student') && (
+        {/* Parent Dashboard */}
+        {(authState.user?.role === 'parent') && (
           <>
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Quick Actions</Text>
