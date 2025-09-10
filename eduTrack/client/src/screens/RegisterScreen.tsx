@@ -252,9 +252,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.darkGray,
   },
+  pickerWrapper: {
+    flex: 1,
+    height: 50,
+    justifyContent: 'center',
+  },
   picker: {
     flex: 1,
     height: 50,
+    color: COLORS.darkGray,
+  },
+  pickerItem: {
+    // iOS specific styling
+    height: 50,
+    fontSize: 16,
     color: COLORS.darkGray,
   },
   eyeButton: {

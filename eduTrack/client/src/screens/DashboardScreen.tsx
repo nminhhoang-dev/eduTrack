@@ -190,30 +190,34 @@ const DashboardScreen: React.FC<Props> = ({ navigation }) => {
         )}
 
         {/* Parent Dashboard */}
-        {(authState.user?.role === 'parent') && (
+        {authState.user?.role === 'parent' && (
           <>
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Quick Actions</Text>
+              <Text style={styles.sectionTitle}>My Children</Text>
               
+              <TouchableOpacity
+                style={styles.actionCard}
+                onPress={() => navigation.navigate('ParentStudents')}
+              >
+                <Ionicons name="people-outline" size={24} color={COLORS.primary} />
+                <View style={styles.actionText}>
+                  <Text style={styles.actionTitle}>View Children Progress</Text>
+                  <Text style={styles.actionSubtitle}>Check grades and attendance</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={20} color={COLORS.gray} />
+              </TouchableOpacity>
+
               <TouchableOpacity
                 style={styles.actionCard}
                 onPress={() => navigation.navigate('Notifications')}
               >
-                <Ionicons name="notifications-outline" size={24} color={COLORS.primary} />
+                <Ionicons name="notifications-outline" size={24} color={COLORS.secondary} />
                 <View style={styles.actionText}>
                   <Text style={styles.actionTitle}>View Notifications</Text>
-                  <Text style={styles.actionSubtitle}>Check latest updates from teachers</Text>
+                  <Text style={styles.actionSubtitle}>Updates from teachers</Text>
                 </View>
                 <Ionicons name="chevron-forward" size={20} color={COLORS.gray} />
               </TouchableOpacity>
-            </View>
-
-            <View style={styles.infoCard}>
-              <Ionicons name="information-circle" size={24} color={COLORS.primary} />
-              <Text style={styles.infoText}>
-                Welcome to eduTrack! You can view notifications and updates from your teachers here.
-                More features for parents and students will be available soon.
-              </Text>
             </View>
           </>
         )}

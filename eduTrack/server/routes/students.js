@@ -15,6 +15,11 @@ router.get('/', authMiddleware, async (req, res) => {
     if (req.user.role === 'teacher') {
       query.teacherId = req.user._id;
     }
+    
+    // Nếu là phụ huynh thì chỉ xem học sinh có email trùng
+    if (req.user.role === 'parent') {
+      query.parentEmail = req.user.email;
+    }
 
     // Search theo tên hoặc mã học sinh
     if (search) {

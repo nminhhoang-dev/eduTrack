@@ -15,6 +15,9 @@ import DashboardScreen from '../screens/DashboardScreen';
 import StudentListScreen from '../screens/StudentListScreen';
 import StudentDetailScreen from '../screens/StudentDetailScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
+import ParentStudentsScreen from '../screens/ParentStudentsScreen';
+import AddStudentScreen from '../screens/AddStudentScreen';
+import EditStudentScreen from '../screens/EditStudentScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -98,6 +101,22 @@ const AppStack = () => {
       <Stack.Screen 
         name="StudentDetail" 
         component={StudentDetailScreen}
+        options={{ headerShown: false }}
+      />
+      {/* 👉 thêm route AddStudent và EditStudent */}
+      <Stack.Screen 
+        name="AddStudent" 
+        component={AddStudentScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="EditStudent" 
+        component={EditStudentScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="ParentStudents" 
+        component={ParentStudentsScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
