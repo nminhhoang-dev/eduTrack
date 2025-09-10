@@ -77,13 +77,11 @@ const StudentListScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleEditStudent = (student: Student) => {
-    // TODO: Navigate to edit student screen
-    Alert.alert('Feature Coming Soon', 'Edit student feature will be available soon!');
+    navigation.navigate('EditStudent', { student });
   };
 
   const handleAddStudent = () => {
-    // TODO: Navigate to add student screen
-    Alert.alert('Feature Coming Soon', 'Add student feature will be available soon!');
+    navigation.navigate('AddStudent');
   };
 
   const renderStudent = ({ item }: { item: Student }) => (

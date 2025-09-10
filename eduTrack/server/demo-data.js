@@ -41,17 +41,8 @@ const createDemoData = async () => {
       phone: '+84907654321'
     });
 
-    const studentUser = new User({
-      name: 'Student Demo',
-      email: 'student@demo.com',
-      password: 'password123', // Will be hashed automatically
-      role: 'student',
-      phone: '+84909876543'
-    });
-
     await teacherUser.save();
     await parentUser.save();
-    await studentUser.save();
     console.log('Created demo users');
 
     // Create demo students
@@ -176,7 +167,6 @@ const createDemoData = async () => {
     console.log('Login credentials:');
     console.log('Teacher: teacher@demo.com / password123');
     console.log('Parent: parent@demo.com / password123');
-    console.log('Student: student@demo.com / password123');
 
   } catch (error) {
     console.error('Error creating demo data:', error);

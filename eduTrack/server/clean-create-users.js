@@ -44,18 +44,25 @@ const cleanAndCreateUsers = async () => {
     await parent.save();
     console.log('✅ Created parent:', parent.email);
 
-    // Student
-    const student = new User({
-      name: 'Student Demo',
-      email: 'student@demo.com',
-      password: 'password123',
-      role: 'student',
-      phone: '+84909876543'
-    });
-    await student.save();
-    console.log('✅ Created student:', student.email);
+    // Student - Remove this section since we don't need student role anymore
+
+    // Test login immediately
+    console.log('\n🧪 Testing passwords...');
     
-    console.log('\n🎉 All users created successfully!');
+    const teacherTest = await teacher.comparePassword('password123');
+    console.log(`Teacher password test: ${teacherTest}`);
+    
+    const parentTest = await parent.comparePassword('password123');
+    console.log(`Parent password test: ${parentTest}`);
+
+    if (teacherTest && parentTest) {
+      console.log('\n🎉 All users created successfully and passwords work!');
+      console.log('\nLogin credentials:');
+      console.log('Teacher: teacher@demo.com / password123');
+      console.log('Parent: parent@demo.com / password123');
+    } else {
+      console.log('\n❌ Some password tests failed!');
+    }
 
   } catch (error) {
     console.error('❌ Error:', error);
