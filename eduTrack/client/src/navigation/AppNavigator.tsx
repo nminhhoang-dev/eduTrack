@@ -7,6 +7,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { RootStackParamList } from '../utils/types';
 import { COLORS } from '../utils/constants';
 import Loading from '../components/Loading';
+import NotificationBadge from '../components/NotificationBadge';
 
 // Screens
 import LoginScreen from '../screens/LoginScreen';
@@ -18,6 +19,7 @@ import NotificationsScreen from '../screens/NotificationsScreen';
 import ParentStudentsScreen from '../screens/ParentStudentsScreen';
 import AddStudentScreen from '../screens/AddStudentScreen';
 import EditStudentScreen from '../screens/EditStudentScreen';
+import ComposeNotificationScreen from '../screens/ComposeNotificationScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -36,6 +38,7 @@ const AuthStack = () => {
 const MainTabs = () => {
   const { state } = useAuth();
   const isTeacher = state.user?.role === 'teacher';
+  const isParent = state.user?.role === 'parent';
 
   return (
     <Tab.Navigator
@@ -49,7 +52,7 @@ const MainTabs = () => {
           } else if (route.name === 'Students') {
             iconName = focused ? 'people' : 'people-outline';
           } else if (route.name === 'Notifications') {
-            iconName = focused ? 'notifications' : 'notifications-outline';
+            return <NotificationBadge color={color} size={size} />;
           } else {
             iconName = 'ellipse-outline';
           }
@@ -83,13 +86,24 @@ const MainTabs = () => {
           options={{ tabBarLabel: 'Students' }}
         />
       )}
-      
+
+      {isTeacher && (
+        <Tab.Screen 
+          name="ComposeNotification" 
+          component={ComposeNotificationScreen}
+          options={{ tabBarLabel: 'Compose Notification' }}
+        />
+      )}
+
+      {isParent && (
       <Tab.Screen 
         name="Notifications" 
         component={NotificationsScreen}
         options={{ tabBarLabel: 'Notifications' }}
       />
+      )}
     </Tab.Navigator>
+    
   );
 };
 
@@ -103,7 +117,6 @@ const AppStack = () => {
         component={StudentDetailScreen}
         options={{ headerShown: false }}
       />
-      {/* 👉 thêm route AddStudent và EditStudent */}
       <Stack.Screen 
         name="AddStudent" 
         component={AddStudentScreen}
@@ -117,6 +130,11 @@ const AppStack = () => {
       <Stack.Screen 
         name="ParentStudents" 
         component={ParentStudentsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="ComposeNotification" 
+        component={ComposeNotificationScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

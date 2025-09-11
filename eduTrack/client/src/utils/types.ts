@@ -72,14 +72,15 @@ export interface NotificationsResponse {
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
-  MainTabs: undefined;
   Dashboard: undefined;
+  MainTabs: undefined;
   StudentList: undefined;
   StudentDetail: { studentId: string };
   Notifications: undefined;
   AddStudent: undefined;
   EditStudent: { student: Student };
   ParentStudents: undefined;
+  ComposeNotification: undefined;
 };
 
 // API Response types
