@@ -10,11 +10,13 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotifications } from '../contexts/NotificationContext';
 import { Notification, NotificationsResponse } from '../utils/types';
 import { COLORS } from '../utils/constants';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import apiService from '../services/api';
+
 
 interface Props {
   navigation: any;
@@ -72,12 +74,13 @@ const NotificationsScreen: React.FC<Props> = ({ navigation }) => {
     await loadNotifications(nextPage, true);
   }, [loadingMore, page, totalPages]);
 
+  const { refreshNotifications } = useNotifications();
   const markAsRead = async (notification: Notification) => {
     if (notification.isRead) return;
 
     try {
       await apiService.markNotificationAsRead(notification._id);
-      
+      await refreshNotifications(); // cập nhật lại badge
       // Update local state
       setNotifications(prev =>
         prev.map(item =>

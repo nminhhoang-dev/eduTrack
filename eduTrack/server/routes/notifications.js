@@ -71,7 +71,29 @@ router.post('/', authMiddleware, async (req, res) => {
     });
 
     await notification.save();
-    res.status(201).json({ message: 'Notification sent successfully', notification });
+    
+    // Send push notification
+    try {
+      await pushNotificationService.sendNotificationToParents(
+        [recipientEmail],
+        title,
+        message,
+        {
+          notificationId: notification._id,
+          type: type,
+          senderId: req.user._id
+        }
+      );
+      console.log(`✅ Push notification triggered for ${recipientEmail}`);
+    } catch (pushError) {
+      console.error('❌ Push notification failed:', pushError);
+      // Don't fail the whole request if push notification fails
+    }
+
+    res.status(201).json({ 
+      message: 'Notification sent successfully', 
+      notification 
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });

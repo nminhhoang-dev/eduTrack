@@ -144,7 +144,7 @@ const DashboardScreen: React.FC<Props> = ({ navigation }) => {
 
               <TouchableOpacity
                 style={styles.actionCard}
-                onPress={() => navigation.navigate('Notifications')}
+                onPress={() => navigation.navigate('ComposeNotification')}
               >
                 <Ionicons name="notifications-outline" size={24} color={COLORS.secondary} />
                 <View style={styles.actionText}>
