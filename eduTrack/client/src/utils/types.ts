@@ -81,6 +81,7 @@ export type RootStackParamList = {
   EditStudent: { student: Student };
   ParentStudents: undefined;
   ComposeNotification: undefined;
+  TeacherNotification: undefined;
 };
 
 // API Response types

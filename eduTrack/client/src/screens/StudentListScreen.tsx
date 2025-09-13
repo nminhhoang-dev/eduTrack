@@ -122,7 +122,7 @@ const StudentListScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   // Sticky header component
-  const StickyHeader = () => (
+  const StickyHeader = React.useMemo(() => (
     <View style={styles.stickyHeader}>
       <View style={styles.searchContainer}>
         <Ionicons name="search" size={20} color={COLORS.gray} />
@@ -131,6 +131,10 @@ const StudentListScreen: React.FC<Props> = ({ navigation }) => {
           placeholder="Search students..."
           value={searchQuery}
           onChangeText={setSearchQuery}
+          returnKeyType="search"
+          clearButtonMode="while-editing"
+          autoCorrect={false}
+          autoCapitalize="none"
         />
         {searchQuery ? (
           <TouchableOpacity onPress={() => setSearchQuery('')}>
@@ -150,7 +154,7 @@ const StudentListScreen: React.FC<Props> = ({ navigation }) => {
         )}
       </View>
     </View>
-  );
+  ), [searchQuery, state.pagination.total, authState.user?.role]);
 
   if (authState.user?.role !== 'teacher') {
     return (

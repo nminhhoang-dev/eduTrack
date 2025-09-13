@@ -10,19 +10,17 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/AuthContext';
-import { useNotifications } from '../contexts/NotificationContext';
 import { Notification, NotificationsResponse } from '../utils/types';
 import { COLORS } from '../utils/constants';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import apiService from '../services/api';
 
-
 interface Props {
   navigation: any;
 }
 
-const NotificationsScreen: React.FC<Props> = ({ navigation }) => {
+const TeacherNotificationsScreen: React.FC<Props> = ({ navigation }) => {
   const { state: authState } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,65 +30,48 @@ const NotificationsScreen: React.FC<Props> = ({ navigation }) => {
   const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
-    loadNotifications();
+    loadSentNotifications();
   }, []);
 
-  const loadNotifications = useCallback(async (pageNum = 1, append = false) => {
-    try {
-      if (!append) setIsLoading(true);
+  const loadSentNotifications = useCallback(async (pageNum = 1, append = false) => {
+  try {
+    if (!append) setIsLoading(true);
+    
+    const response: NotificationsResponse = await apiService.getSentNotifications({
+      page: pageNum,
+      limit: 20,
+    });
 
-      const response: NotificationsResponse = await apiService.getNotifications({
-        page: pageNum,
-        limit: 20,
-      });
-
-      if (append) {
-        setNotifications(prev => [...prev, ...response.notifications]);
-      } else {
-        setNotifications(response.notifications);
-      }
-
-      setTotalPages(response.totalPages);
-      setPage(pageNum);
-    } catch (error: any) {
-      Alert.alert('Error', error.message || 'Failed to load notifications');
-    } finally {
-      setIsLoading(false);
-      setRefreshing(false);
-      setLoadingMore(false);
+    if (append) {
+      setNotifications(prev => [...prev, ...response.notifications]);
+    } else {
+      setNotifications(response.notifications);
     }
-  }, []);
+    
+    setTotalPages(response.totalPages);
+    setPage(pageNum);
+  } catch (error: any) {
+    Alert.alert('Error', error.message || 'Failed to load sent notifications');
+  } finally {
+    setIsLoading(false);
+    setRefreshing(false);
+    setLoadingMore(false);
+  }
+}, []);
+
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    await loadNotifications(1, false);
-  }, []);
+    await loadSentNotifications(1, false);
+  }, [loadSentNotifications]);
 
   const loadMore = useCallback(async () => {
     if (loadingMore || page >= totalPages) return;
 
     setLoadingMore(true);
     const nextPage = page + 1;
-    await loadNotifications(nextPage, true);
-  }, [loadingMore, page, totalPages]);
-
-  const { refreshNotifications } = useNotifications();
-  const markAsRead = async (notification: Notification) => {
-    if (notification.isRead) return;
-
-    try {
-      await apiService.markNotificationAsRead(notification._id);
-      await refreshNotifications(); // cập nhật lại badge
-      // Update local state
-      setNotifications(prev =>
-        prev.map(item =>
-          item._id === notification._id ? { ...item, isRead: true } : item
-        )
-      );
-    } catch (error: any) {
-      Alert.alert('Error', error.message || 'Failed to mark as read');
-    }
-  };
+    await loadSentNotifications(nextPage, true);
+  }, [loadingMore, page, totalPages, loadSentNotifications]);
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
@@ -134,34 +115,34 @@ const NotificationsScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   const renderNotification = ({ item }: { item: Notification }) => (
-    <TouchableOpacity
-      style={[styles.notificationCard, !item.isRead && styles.unreadCard]}
-      onPress={() => markAsRead(item)}
-    >
+    <View style={styles.notificationCard}>
       <View style={styles.notificationHeader}>
-        <View style={styles.iconContainer}>
+        <View style={[styles.iconContainer, { backgroundColor: `${getNotificationColor(item.type)}20` }]}>
           <Ionicons
             name={getNotificationIcon(item.type) as keyof typeof Ionicons.glyphMap}
             size={20}
             color={getNotificationColor(item.type)}
           />
         </View>
-
+        
         <View style={styles.notificationContent}>
-          <Text style={[styles.notificationTitle, !item.isRead && styles.unreadTitle]}>
-            {item.title}
-          </Text>
+          <Text style={styles.notificationTitle}>{item.title}</Text>
           <Text style={styles.notificationMessage}>{item.message}</Text>
-
+          
           <View style={styles.notificationFooter}>
-            <Text style={styles.senderName}>From: {item.senderId.name}</Text>
+            <Text style={styles.recipientText}>To: {item.recipientEmail}</Text>
             <Text style={styles.notificationDate}>{formatDate(item.createdAt)}</Text>
           </View>
         </View>
 
-        {!item.isRead && <View style={styles.unreadDot} />}
+        <View style={styles.statusContainer}>
+          <View style={[styles.statusDot, { backgroundColor: item.isRead ? COLORS.success : COLORS.warning }]} />
+          <Text style={styles.statusText}>
+            {item.isRead ? 'Read' : 'Unread'}
+          </Text>
+        </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 
   const renderFooter = () => {
@@ -175,26 +156,45 @@ const NotificationsScreen: React.FC<Props> = ({ navigation }) => {
 
   const renderEmpty = () => {
     if (isLoading) return null;
-
+    
     return (
       <View style={styles.emptyContainer}>
-        <Ionicons name="notifications-outline" size={64} color={COLORS.gray} />
-        <Text style={styles.emptyText}>No notifications yet</Text>
+        <Ionicons name="paper-plane-outline" size={64} color={COLORS.gray} />
+        <Text style={styles.emptyText}>No notifications sent yet</Text>
         <Text style={styles.emptySubtext}>
-          You'll see updates from teachers here
+          Start sending notifications to parents from the compose screen
         </Text>
+        <TouchableOpacity 
+          style={styles.composeButton}
+          onPress={() => navigation.navigate('ComposeNotification')}
+        >
+          <Ionicons name="add" size={20} color={COLORS.white} />
+          <Text style={styles.composeButtonText}>Send Notification</Text>
+        </TouchableOpacity>
       </View>
     );
   };
 
+  const renderHeader = () => (
+    <View style={styles.headerStats}>
+      <Text style={styles.statsTitle}>Sent Notifications</Text>
+      <Text style={styles.statsSubtitle}>
+        {notifications.length} notification{notifications.length !== 1 ? 's' : ''} sent
+      </Text>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
-      <Header title="Notifications" />
-
+      <Header 
+        title="Sent Notifications" 
+      />
+      
       <FlatList
         data={notifications}
         keyExtractor={(item) => item._id}
         renderItem={renderNotification}
+        ListHeaderComponent={notifications.length > 0 ? renderHeader : undefined}
         ListEmptyComponent={renderEmpty}
         ListFooterComponent={renderFooter}
         refreshControl={
@@ -206,8 +206,16 @@ const NotificationsScreen: React.FC<Props> = ({ navigation }) => {
       />
 
       {isLoading && notifications.length === 0 && (
-        <Loading fullScreen text="Loading notifications..." />
+        <Loading fullScreen text="Loading sent notifications..." />
       )}
+
+      {/* Compose FAB */}
+      <TouchableOpacity 
+        style={styles.fab}
+        onPress={() => navigation.navigate('ComposeNotification')}
+      >
+        <Ionicons name="add" size={24} color={COLORS.white} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -223,6 +231,28 @@ const styles = StyleSheet.create({
   emptyContent: {
     flexGrow: 1,
   },
+  headerStats: {
+    backgroundColor: COLORS.white,
+    marginHorizontal: 16,
+    marginVertical: 8,
+    padding: 16,
+    borderRadius: 12,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+  },
+  statsTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: COLORS.darkGray,
+    marginBottom: 4,
+  },
+  statsSubtitle: {
+    fontSize: 14,
+    color: COLORS.gray,
+  },
   notificationCard: {
     backgroundColor: COLORS.white,
     marginHorizontal: 16,
@@ -235,10 +265,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
   },
-  unreadCard: {
-    borderLeftWidth: 4,
-    borderLeftColor: COLORS.primary,
-  },
   notificationHeader: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -247,7 +273,6 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: COLORS.lightGray,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -257,13 +282,9 @@ const styles = StyleSheet.create({
   },
   notificationTitle: {
     fontSize: 16,
-    fontWeight: '500',
-    color: COLORS.darkGray,
-    marginBottom: 4,
-  },
-  unreadTitle: {
     fontWeight: '600',
     color: COLORS.darkGray,
+    marginBottom: 4,
   },
   notificationMessage: {
     fontSize: 14,
@@ -276,22 +297,29 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  senderName: {
+  recipientText: {
     fontSize: 12,
-    color: COLORS.gray,
-    fontStyle: 'italic',
+    color: COLORS.primary,
+    fontWeight: '500',
   },
   notificationDate: {
     fontSize: 12,
     color: COLORS.gray,
   },
-  unreadDot: {
+  statusContainer: {
+    alignItems: 'center',
+    marginLeft: 8,
+  },
+  statusDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: COLORS.primary,
-    marginLeft: 8,
-    marginTop: 4,
+    marginBottom: 4,
+  },
+  statusText: {
+    fontSize: 10,
+    color: COLORS.gray,
+    fontWeight: '500',
   },
   footerLoader: {
     paddingVertical: 20,
@@ -313,7 +341,38 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: COLORS.gray,
     textAlign: 'center',
+    marginBottom: 24,
+  },
+  composeButton: {
+    backgroundColor: COLORS.primary,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 25,
+  },
+  composeButtonText: {
+    color: COLORS.white,
+    fontSize: 16,
+    fontWeight: '600',
+    marginLeft: 8,
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: COLORS.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
   },
 });
 
-export default NotificationsScreen;
+export default TeacherNotificationsScreen;
