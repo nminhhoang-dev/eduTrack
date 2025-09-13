@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -44,7 +44,7 @@ const StudentDetailScreen: React.FC<Props> = ({ navigation, route }) => {
     return () => clearCurrentStudent();
   }, [studentId]);
 
-  const handleAddGrade = async () => {
+  const handleAddGrade = useCallback(async () => {
     if (!gradeForm.subject || !gradeForm.score) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
@@ -69,7 +69,23 @@ const StudentDetailScreen: React.FC<Props> = ({ navigation, route }) => {
     } catch (error: any) {
       Alert.alert('Error', error.message);
     }
-  };
+  }, [gradeForm, studentId, addGrade]);
+
+  const handleCloseModal = useCallback(() => {
+    setShowAddGradeModal(false);
+  }, []);
+
+  const handleSubjectChange = useCallback((text: string) => {
+    setGradeForm(prev => ({ ...prev, subject: text }));
+  }, []);
+
+  const handleScoreChange = useCallback((text: string) => {
+    setGradeForm(prev => ({ ...prev, score: text }));
+  }, []);
+
+  const handleTypeChange = useCallback((value: string) => {
+    setGradeForm(prev => ({ ...prev, type: value as any }));
+  }, []);
 
   const renderGradeItem = (grade: Grade, index: number) => (
     <View key={index} style={styles.gradeItem}>
@@ -88,75 +104,6 @@ const StudentDetailScreen: React.FC<Props> = ({ navigation, route }) => {
         </Text>
       </View>
     </View>
-  );
-
-  const AddGradeModal = () => (
-    <Modal
-      visible={showAddGradeModal}
-      transparent
-      animationType="slide"
-      onRequestClose={() => setShowAddGradeModal(false)}
-    >
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Add New Grade</Text>
-            <TouchableOpacity onPress={() => setShowAddGradeModal(false)}>
-              <Ionicons name="close" size={24} color={COLORS.gray} />
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.modalContent}>
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>Subject</Text>
-              <TextInput
-                style={styles.textInput}
-                value={gradeForm.subject}
-                onChangeText={(text) => setGradeForm({ ...gradeForm, subject: text })}
-                placeholder="e.g., Math, English, Science"
-              />
-            </View>
-
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>Score (0-10)</Text>
-              <TextInput
-                style={styles.textInput}
-                value={gradeForm.score}
-                onChangeText={(text) => setGradeForm({ ...gradeForm, score: text })}
-                placeholder="e.g., 8.5"
-                keyboardType="numeric"
-              />
-            </View>
-
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>Type</Text>
-              <View style={styles.pickerContainer}>
-                <Picker
-                  selectedValue={gradeForm.type}
-                  onValueChange={(value) => setGradeForm({ ...gradeForm, type: value })}
-                >
-                  <Picker.Item label="Homework" value="homework" />
-                  <Picker.Item label="Test" value="test" />
-                  <Picker.Item label="Exam" value="exam" />
-                </Picker>
-              </View>
-            </View>
-
-            <View style={styles.modalActions}>
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={() => setShowAddGradeModal(false)}
-              >
-                <Text style={styles.cancelButtonText}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.saveButton} onPress={handleAddGrade}>
-                <Text style={styles.saveButtonText}>Add Grade</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </View>
-    </Modal>
   );
 
   if (state.isLoading && !state.currentStudent) {
@@ -285,7 +232,78 @@ const StudentDetailScreen: React.FC<Props> = ({ navigation, route }) => {
         </View>
       </ScrollView>
 
-      {isTeacher && <AddGradeModal />}
+      {/* Add Grade Modal */}
+      {isTeacher && (
+        <Modal
+          visible={showAddGradeModal}
+          transparent
+          animationType="slide"
+          onRequestClose={handleCloseModal}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Add New Grade</Text>
+                <TouchableOpacity onPress={handleCloseModal}>
+                  <Ionicons name="close" size={24} color={COLORS.gray} />
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.modalContent}>
+                <View style={styles.inputContainer}>
+                  <Text style={styles.inputLabel}>Subject</Text>
+                  <TextInput
+                    style={styles.textInput}
+                    value={gradeForm.subject}
+                    onChangeText={handleSubjectChange}
+                    placeholder="e.g., Math, English, Science"
+                    autoCorrect={false}
+                    autoCapitalize="words"
+                  />
+                </View>
+
+                <View style={styles.inputContainer}>
+                  <Text style={styles.inputLabel}>Score (0-10)</Text>
+                  <TextInput
+                    style={styles.textInput}
+                    value={gradeForm.score}
+                    onChangeText={handleScoreChange}
+                    placeholder="e.g., 8.5"
+                    keyboardType="numeric"
+                    autoCorrect={false}
+                  />
+                </View>
+
+                <View style={styles.inputContainer}>
+                  <Text style={styles.inputLabel}>Type</Text>
+                  <View style={styles.pickerContainer}>
+                    <Picker
+                      selectedValue={gradeForm.type}
+                      onValueChange={handleTypeChange}
+                    >
+                      <Picker.Item label="Homework" value="homework" />
+                      <Picker.Item label="Test" value="test" />
+                      <Picker.Item label="Exam" value="exam" />
+                    </Picker>
+                  </View>
+                </View>
+
+                <View style={styles.modalActions}>
+                  <TouchableOpacity
+                    style={styles.cancelButton}
+                    onPress={handleCloseModal}
+                  >
+                    <Text style={styles.cancelButtonText}>Cancel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.saveButton} onPress={handleAddGrade}>
+                    <Text style={styles.saveButtonText}>Add Grade</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 };

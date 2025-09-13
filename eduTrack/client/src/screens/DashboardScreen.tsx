@@ -186,6 +186,22 @@ const DashboardScreen: React.FC<Props> = ({ navigation }) => {
                 ))}
               </View>
             )}
+
+            {/* Bottom Notifications for Teacher */}
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Notifications</Text>
+              <TouchableOpacity 
+                style={styles.actionCard}
+                onPress={() => navigation.navigate('TeacherNotification')} 
+              >
+                <Ionicons name="notifications-outline" size={24} color={COLORS.secondary} />
+                <View style={styles.actionText}>
+                  <Text style={styles.actionTitle}>My Sent Notifications</Text>
+                  <Text style={styles.actionSubtitle}>Check notifications you have sent</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={20} color={COLORS.gray} />
+              </TouchableOpacity>
+            </View>
           </>
         )}
 

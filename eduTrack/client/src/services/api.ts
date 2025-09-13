@@ -1,3 +1,4 @@
+//services/api.ts
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { API_BASE_URL, STORAGE_KEYS } from '../utils/constants';
@@ -124,6 +125,13 @@ class ApiService {
     const response = await this.api.get('/notifications', { params });
     return response.data;
   }
+
+
+  async getSentNotifications(params?: { page?: number; limit?: number }) {
+  const response = await this.api.get('/notifications/sent', { params });
+  return response.data;
+  }
+
 
   async markNotificationAsRead(id: string) {
     const response = await this.api.put(`/notifications/${id}/read`);

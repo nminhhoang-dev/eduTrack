@@ -1,3 +1,4 @@
+// AppNavigator.tsx
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -16,6 +17,7 @@ import DashboardScreen from '../screens/DashboardScreen';
 import StudentListScreen from '../screens/StudentListScreen';
 import StudentDetailScreen from '../screens/StudentDetailScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
+import TeacherNotificationsScreen from '../screens/TeacherNotificationsScreen';
 import ParentStudentsScreen from '../screens/ParentStudentsScreen';
 import AddStudentScreen from '../screens/AddStudentScreen';
 import EditStudentScreen from '../screens/EditStudentScreen';
@@ -53,6 +55,8 @@ const MainTabs = () => {
             iconName = focused ? 'people' : 'people-outline';
           } else if (route.name === 'Notifications') {
             return <NotificationBadge color={color} size={size} />;
+          } else if (route.name === 'TeacherNotification') {
+            iconName = focused ? 'notifications' : 'notifications-outline';
           } else {
             iconName = 'ellipse-outline';
           }
@@ -73,37 +77,36 @@ const MainTabs = () => {
         },
       })}
     >
-      <Tab.Screen 
-        name="Dashboard" 
+      <Tab.Screen
+        name="Dashboard"
         component={DashboardScreen}
         options={{ tabBarLabel: 'Dashboard' }}
       />
-      
+
       {isTeacher && (
-        <Tab.Screen 
-          name="Students" 
+        <Tab.Screen
+          name="Students"
           component={StudentListScreen}
           options={{ tabBarLabel: 'Students' }}
         />
       )}
 
       {isTeacher && (
-        <Tab.Screen 
-          name="ComposeNotification" 
-          component={ComposeNotificationScreen}
-          options={{ tabBarLabel: 'Compose Notification' }}
+        <Tab.Screen
+          name="TeacherNotification"
+          component={TeacherNotificationsScreen}
+          options={{ tabBarLabel: 'Sent Notifications' }}
         />
       )}
 
       {isParent && (
-      <Tab.Screen 
-        name="Notifications" 
-        component={NotificationsScreen}
-        options={{ tabBarLabel: 'Notifications' }}
-      />
+        <Tab.Screen
+          name="Notifications"
+          component={NotificationsScreen}
+          options={{ tabBarLabel: 'Notifications' }}
+        />
       )}
     </Tab.Navigator>
-    
   );
 };
 
@@ -112,29 +115,34 @@ const AppStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="MainTabs" component={MainTabs} />
-      <Stack.Screen 
-        name="StudentDetail" 
+      <Stack.Screen
+        name="StudentDetail"
         component={StudentDetailScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen 
-        name="AddStudent" 
+      <Stack.Screen
+        name="AddStudent"
         component={AddStudentScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen 
-        name="EditStudent" 
+      <Stack.Screen
+        name="EditStudent"
         component={EditStudentScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen 
-        name="ParentStudents" 
+      <Stack.Screen
+        name="ParentStudents"
         component={ParentStudentsScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen 
-        name="ComposeNotification" 
+      <Stack.Screen
+        name="ComposeNotification"
         component={ComposeNotificationScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="TeacherNotification"
+        component={TeacherNotificationsScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

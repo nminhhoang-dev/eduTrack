@@ -4,22 +4,52 @@ const { authMiddleware } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-// Lấy thông báo của user (phụ huynh/học sinh)
+// Lấy thông báo của user (phụ huynh)
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const { page = 1, limit = 20 } = req.query;
-    
-    const notifications = await Notification.find({ 
-      recipientEmail: req.user.email 
-    })
-    .populate('senderId', 'name')
-    .limit(limit * 1)
-    .skip((page - 1) * limit)
-    .sort({ createdAt: -1 });
 
-    const total = await Notification.countDocuments({ 
-      recipientEmail: req.user.email 
+    const notifications = await Notification.find({
+      recipientEmail: req.user.email
+    })
+      .populate('senderId', 'name')
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .sort({ createdAt: -1 });
+
+    const total = await Notification.countDocuments({
+      recipientEmail: req.user.email
     });
+
+    res.json({
+      notifications,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+      total
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Lấy thông báo đã gửi bởi giáo viên
+router.get('/sent', authMiddleware, async (req, res) => {
+  try {
+    // Chỉ cho phép giáo viên
+    if (req.user.role !== 'teacher') {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+
+    const { page = 1, limit = 20 } = req.query;
+
+    const notifications = await Notification.find({ senderId: req.user._id })
+      .populate('senderId', 'name')
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .sort({ createdAt: -1 });
+
+    const total = await Notification.countDocuments({ senderId: req.user._id });
 
     res.json({
       notifications,
@@ -37,7 +67,7 @@ router.get('/', authMiddleware, async (req, res) => {
 router.put('/:id/read', authMiddleware, async (req, res) => {
   try {
     const notification = await Notification.findById(req.params.id);
-    
+
     if (!notification) {
       return res.status(404).json({ message: 'Notification not found' });
     }
@@ -71,7 +101,7 @@ router.post('/', authMiddleware, async (req, res) => {
     });
 
     await notification.save();
-    
+
     // Send push notification
     try {
       await pushNotificationService.sendNotificationToParents(
@@ -90,9 +120,9 @@ router.post('/', authMiddleware, async (req, res) => {
       // Don't fail the whole request if push notification fails
     }
 
-    res.status(201).json({ 
-      message: 'Notification sent successfully', 
-      notification 
+    res.status(201).json({
+      message: 'Notification sent successfully',
+      notification
     });
   } catch (error) {
     console.error(error);
