@@ -16,32 +16,68 @@ eduTrack is a digital gradebook and communication platform that modernizes the t
 - **Attendance Monitoring**: Track and visualize attendance patterns
 - **Behavior Assessment**: Monitor and record student behavior
 
-### Demo Screenshots
-[Login Screen]
-![Login screen](./demo/demo_LoginScreen.png)
-[Register Screen]
-![Register screen](./demo/demo_RegisterScreen.png)
-[Dashboard - Teacher]  
-![Teacher's Dashboard](./demo/demo_DashboardTeacher.png)
-[Student List]
-![List of students](./demo/demo_StudentList.png)
-[Student Detail]        
-![Student's details](./demo/demo_StudentDetails.png)
-![Student's details](./demo/demo_StudentDetails2.png)
-[Add New Grade Modal]         
-![Add new grade for students](./demo/demo_AddGradeModal.png)
-[Edit Students]         
-![Editing student info](./demo/demo_StudentList.png)
-[Notifications - Teacher]         
-![Notifications screen for teachers](./demo/demo_SentNotifications.png)
-[Compose Notifications]         
-![Notifications composing screen](./demo/demo_SendNotifications.png)
-[Dashboard - Parent]
-![Dashboard - Parent](./demo/demo_DashboardParent.png)
-[Childs Progress]
-![Tracking child's progress](./demo/demo_ChildsProgress.png)
-[Notifications - Parent]         
-![Notifications screen for parents](./demo/demo_NotificationsParent.png)
+## Demo Screenshots
+
+### Login Screen
+<p align="center">
+  <img src="./demo/demo_LoginScreen.png" alt="Login Screen" width="300">
+</p>
+
+### Register Screen
+<p align="center">
+  <img src="./demo/demo_RegisterScreen.png" alt="Register Screen" width="300">
+</p>
+
+### Dashboard - Teacher
+<p align="center">
+  <img src="./demo/demo_DashboardTeacher.png" alt="Teacher's Dashboard" width="300">
+</p>
+
+### Student List
+<p align="center">
+  <img src="./demo/demo_StudentList.png" alt="Student List" width="300">
+</p>
+
+### Student Detail
+<p align="center">
+  <img src="./demo/demo_StudentDetails.png" alt="Student's Details" width="300">
+  <img src="./demo/demo_StudentDetails2.png" alt="Student's Details 2" width="300">
+</p>
+
+### Add New Grade Modal
+<p align="center">
+  <img src="./demo/demo_AddGradeModal.png" alt="Add Grade Modal" width="300">
+</p>
+
+### Edit Students
+<p align="center">
+  <img src="./demo/demo_StudentList.png" alt="Edit Student Info" width="300">
+</p>
+
+### Notifications - Teacher
+<p align="center">
+  <img src="./demo/demo_SentNotifications.png" alt="Teacher Notifications" width="300">
+</p>
+
+### Compose Notifications
+<p align="center">
+  <img src="./demo/demo_SendNotifications.png" alt="Compose Notifications" width="300">
+</p>
+
+### Dashboard - Parent
+<p align="center">
+  <img src="./demo/demo_DashboardParent.png" alt="Parent Dashboard" width="300">
+</p>
+
+### Child's Progress
+<p align="center">
+  <img src="./demo/demo_ChildsProgress.png" alt="Child's Progress" width="300">
+</p>
+
+### Notifications - Parent
+<p align="center">
+  <img src="./demo/demo_NotificationsParent.png" alt="Parent Notifications" width="300">
+</p>
 
 ## Architecture
 
