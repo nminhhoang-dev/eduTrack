@@ -16,6 +16,33 @@ eduTrack is a digital gradebook and communication platform that modernizes the t
 - **Attendance Monitoring**: Track and visualize attendance patterns
 - **Behavior Assessment**: Monitor and record student behavior
 
+### Demo Screenshots
+[Login Screen]
+![Login screen](./demo/demo_LoginScreen.png)
+[Register Screen]
+![Register screen](./demo/demo_RegisterScreen.png)
+[Dashboard - Teacher]  
+![Teacher's Dashboard](./demo/demo_DashboardTeacher.png)
+[Student List]
+![List of students](./demo/demo_StudentList.png)
+[Student Detail]        
+![Student's details](./demo/demo_StudentDetails.png)
+![Student's details](./demo/demo_StudentDetails2.png)
+[Add New Grade Modal]         
+![Add new grade for students](./demo/demo_AddGradeModal.png)
+[Edit Students]         
+![Editing student info](./demo/demo_StudentList.png)
+[Notifications - Teacher]         
+![Notifications screen for teachers](./demo/demo_SentNotifications.png)
+[Compose Notifications]         
+![Notifications composing screen](./demo/demo_SendNotifications.png)
+[Dashboard - Parent]
+![Dashboard - Parent](./demo/demo_DashboardParent.png)
+[Childs Progress]
+![Tracking child's progress](./demo/demo_ChildsProgress.png)
+[Notifications - Parent]         
+![Notifications screen for parents](./demo/demo_NotificationsParent.png)
+
 ## Architecture
 
 ### Frontend (React Native + Expo)
