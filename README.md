@@ -51,7 +51,7 @@ eduTrack is a digital gradebook and communication platform that modernizes the t
 
 ### Edit Students
 <p align="center">
-  <img src="./demo/demo_StudentList.png" alt="Edit Student Info" width="300">
+  <img src="./demo/demo_EditStudents.png" alt="Edit Student Info" width="300">
 </p>
 
 ### Notifications - Teacher
