@@ -114,9 +114,9 @@ router.post('/', authMiddleware, async (req, res) => {
           senderId: req.user._id
         }
       );
-      console.log(`✅ Push notification triggered for ${recipientEmail}`);
+      console.log(`Push notification triggered for ${recipientEmail}`);
     } catch (pushError) {
-      console.error('❌ Push notification failed:', pushError);
+      console.error('Push notification failed:', pushError);
       // Don't fail the whole request if push notification fails
     }
 

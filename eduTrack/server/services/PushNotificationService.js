@@ -1,4 +1,4 @@
-// pushNotificationService.js - Service để gửi push notifications
+// pushNotificationService.js - Service để gửi push notifications - Đang trong quá trình phát triển
 const { Expo } = require('expo-server-sdk');
 
 class PushNotificationService {
