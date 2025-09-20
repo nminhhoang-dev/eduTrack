@@ -17,12 +17,12 @@ export default function App() {
 
         // Listen for notifications when app is open
         const notificationListener = NotificationService.addNotificationListener((notification) => {
-          console.log('📬 Notification received in foreground:', notification);
+          console.log('Notification received in foreground:', notification);
         });
 
         // Listen for notification taps
         const responseListener = NotificationService.addNotificationResponseListener((response) => {
-          console.log('📱 Notification tapped:', response);
+          console.log('Notification tapped:', response);
           // TODO: Navigate to specific screen based on notification data
         });
 
