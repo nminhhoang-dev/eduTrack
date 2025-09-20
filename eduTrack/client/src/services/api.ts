@@ -1,4 +1,3 @@
-//services/api.ts
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { API_BASE_URL, STORAGE_KEYS } from '../utils/constants';
@@ -43,7 +42,6 @@ class ApiService {
           // Token expired, clear storage
           await SecureStore.deleteItemAsync(STORAGE_KEYS.TOKEN);
           await SecureStore.deleteItemAsync(STORAGE_KEYS.USER);
-          // Có thể dispatch logout action ở đây
         }
         return Promise.reject(error);
       }

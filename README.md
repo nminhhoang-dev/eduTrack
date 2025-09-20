@@ -318,7 +318,7 @@ After running the demo data script, use these accounts to test:
 - **Memory Management**: Efficient component lifecycle management
 - **Bundle Splitting**: Optimized app bundle size
 
-## 🔄 Future Enhancements
+## Future Enhancements
 
 - [ ] Offline mode with local database sync
 - [ ] Video messaging between teachers and parents

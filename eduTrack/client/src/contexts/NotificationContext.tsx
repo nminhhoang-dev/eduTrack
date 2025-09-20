@@ -4,7 +4,6 @@ import NotificationService from '../services/NotificationService';
 import apiService from '../services/api';
 import { Notification } from '../utils/types';
 
-// Context type
 interface NotificationContextType {
   unreadCount: number;
   refreshNotifications: () => Promise<void>;
@@ -26,7 +25,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   const initializeNotifications = async () => {
     // Set up notification listeners
     const notificationListener = NotificationService.addNotificationListener((notification) => {
-      console.log('📬 Received notification:', notification);
+      console.log('Received notification:', notification);
       
       // Refresh unread count when notification received
       loadUnreadCount();
@@ -34,12 +33,12 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       // Show local notification for better UX
       if (notification.request?.content) {
         const content = notification.request.content;
-        console.log(`📱 New notification: ${content.title} - ${content.body}`);
+        console.log(`New notification: ${content.title} - ${content.body}`);
       }
     });
 
     const responseListener = NotificationService.addNotificationResponseListener((response) => {
-      console.log('📱 Notification tapped:', response);
+      console.log('Notification tapped:', response);
       // TODO: Navigate to specific screen based on notification data
     });
 

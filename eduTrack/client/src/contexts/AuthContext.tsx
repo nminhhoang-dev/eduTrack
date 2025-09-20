@@ -4,21 +4,18 @@ import { User } from '../utils/types';
 import { STORAGE_KEYS } from '../utils/constants';
 import apiService from '../services/api';
 
-// State type
 interface AuthState {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
 }
 
-// Action types
 type AuthAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_USER'; payload: User }
   | { type: 'CLEAR_USER' }
   | { type: 'RESTORE_USER'; payload: User };
 
-// Context type
 interface AuthContextType {
   state: AuthState;
   login: (email: string, password: string) => Promise<void>;
@@ -32,14 +29,12 @@ interface AuthContextType {
   logout: () => Promise<void>;
 }
 
-// Initial state
 const initialState: AuthState = {
   user: null,
   isLoading: true,
   isAuthenticated: false,
 };
 
-// Reducer
 function authReducer(state: AuthState, action: AuthAction): AuthState {
   switch (action.type) {
     case 'SET_LOADING':
@@ -70,10 +65,8 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
   }
 }
 
-// Create context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Provider component
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
@@ -167,7 +160,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Hook to use auth context
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {

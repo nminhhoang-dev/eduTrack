@@ -2,7 +2,6 @@ import React, { createContext, useContext, useReducer } from 'react';
 import { Student, StudentsResponse } from '../utils/types';
 import apiService from '../services/api';
 
-// State type
 interface StudentState {
   students: Student[];
   currentStudent: Student | null;
@@ -15,7 +14,6 @@ interface StudentState {
   };
 }
 
-// Action types
 type StudentAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string | null }
@@ -26,7 +24,6 @@ type StudentAction =
   | { type: 'DELETE_STUDENT'; payload: string }
   | { type: 'CLEAR_CURRENT_STUDENT' };
 
-// Context type
 interface StudentContextType {
   state: StudentState;
   loadStudents: (params?: {
@@ -52,7 +49,6 @@ interface StudentContextType {
   clearCurrentStudent: () => void;
 }
 
-// Initial state
 const initialState: StudentState = {
   students: [],
   currentStudent: null,
@@ -65,7 +61,6 @@ const initialState: StudentState = {
   },
 };
 
-// Reducer
 function studentReducer(state: StudentState, action: StudentAction): StudentState {
   switch (action.type) {
     case 'SET_LOADING':
@@ -127,10 +122,8 @@ function studentReducer(state: StudentState, action: StudentAction): StudentStat
   }
 }
 
-// Create context
 const StudentContext = createContext<StudentContextType | undefined>(undefined);
 
-// Provider component
 export function StudentProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(studentReducer, initialState);
 
@@ -234,7 +227,6 @@ export function StudentProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Hook to use student context
 export function useStudent() {
   const context = useContext(StudentContext);
   if (context === undefined) {
