@@ -205,6 +205,7 @@ const ComposeNotificationScreen: React.FC<Props> = ({ navigation }) => {
                     selectedValue={formData.type}
                     onValueChange={(value) => updateField('type', value)}
                     style={styles.picker}
+                    itemStyle={{ height: 50, fontSize: 18 }}
                   >
                     <Picker.Item label="General" value="general" />
                     <Picker.Item label="Grade Update" value="grade_update" />
@@ -224,6 +225,7 @@ const ComposeNotificationScreen: React.FC<Props> = ({ navigation }) => {
                     selectedValue={formData.recipientType}
                     onValueChange={(value) => updateField('recipientType', value)}
                     style={styles.picker}
+                    itemStyle={{ height: 50, fontSize: 18 }}
                   >
                     <Picker.Item label="All Parents" value="all" />
                     <Picker.Item label="Specific Parent" value="specific" />
@@ -244,6 +246,7 @@ const ComposeNotificationScreen: React.FC<Props> = ({ navigation }) => {
                       selectedValue={formData.recipientEmail}
                       onValueChange={(value) => updateField('recipientEmail', value)}
                       style={styles.picker}
+                      itemStyle={{ height: 50, fontSize: 18 }}
                     >
                       <Picker.Item label="Select parent..." value="" />
                       {parentEmails.map(email => (
@@ -266,6 +269,7 @@ const ComposeNotificationScreen: React.FC<Props> = ({ navigation }) => {
                       selectedValue={formData.className}
                       onValueChange={(value) => updateField('className', value)}
                       style={styles.picker}
+                      itemStyle={{ height: 50, fontSize: 18 }}
                     >
                       <Picker.Item label="Select class..." value="" />
                       {classes.map(className => (

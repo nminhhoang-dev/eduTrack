@@ -8,6 +8,8 @@ import {
   Alert,
   TextInput,
   Modal,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
@@ -36,7 +38,7 @@ const StudentDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const [gradeForm, setGradeForm] = useState({
     subject: '',
     score: '',
-    type: 'homework' as 'homework' | 'test' | 'exam' | 'project' | 'performance' | 'practical' | 'essay',
+    type: 'homework' as 'homework' | 'test' | 'exam',
   });
 
   useEffect(() => {
@@ -234,12 +236,14 @@ const StudentDetailScreen: React.FC<Props> = ({ navigation, route }) => {
 
       {/* Add Grade Modal */}
       {isTeacher && (
+        
         <Modal
           visible={showAddGradeModal}
           transparent
           animationType="slide"
           onRequestClose={handleCloseModal}
         >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.modalOverlay}>
             <View style={styles.modalContainer}>
               <View style={styles.modalHeader}>
@@ -248,60 +252,65 @@ const StudentDetailScreen: React.FC<Props> = ({ navigation, route }) => {
                   <Ionicons name="close" size={24} color={COLORS.gray} />
                 </TouchableOpacity>
               </View>
+              
+                <View style={styles.modalContent}>
+                  <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Subject</Text>
+                    <TextInput
+                      style={styles.textInput}
+                      value={gradeForm.subject}
+                      onChangeText={handleSubjectChange}
+                      placeholder="e.g., Math, English, Science"
+                      autoCorrect={false}
+                      autoCapitalize="words"
+                    />
+                  </View>
 
-              <View style={styles.modalContent}>
-                <View style={styles.inputContainer}>
-                  <Text style={styles.inputLabel}>Subject</Text>
-                  <TextInput
-                    style={styles.textInput}
-                    value={gradeForm.subject}
-                    onChangeText={handleSubjectChange}
-                    placeholder="e.g., Math, English, Science"
-                    autoCorrect={false}
-                    autoCapitalize="words"
-                  />
-                </View>
+                  <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Score (0-10)</Text>
+                    <TextInput
+                      style={styles.textInput}
+                      value={gradeForm.score}
+                      onChangeText={handleScoreChange}
+                      placeholder="e.g., 8.5"
+                      keyboardType="numeric"
+                      autoCorrect={false}
+                    />
+                  </View>
 
-                <View style={styles.inputContainer}>
-                  <Text style={styles.inputLabel}>Score (0-10)</Text>
-                  <TextInput
-                    style={styles.textInput}
-                    value={gradeForm.score}
-                    onChangeText={handleScoreChange}
-                    placeholder="e.g., 8.5"
-                    keyboardType="numeric"
-                    autoCorrect={false}
-                  />
-                </View>
+                  <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Type</Text>
+                    <View style={styles.pickerContainer}>
+                      <Ionicons name="list-outline" size={20} color={COLORS.gray} />
+                      <Picker
+                        selectedValue={gradeForm.type}
+                        onValueChange={handleTypeChange}
+                        itemStyle={{ height: 50, fontSize: 18, color: 'black' }}
+                        style={{ flex: 1, height: 50 }}
+                      >
+                        <Picker.Item label="Homework" value="homework" />
+                        <Picker.Item label="Test" value="test" />
+                        <Picker.Item label="Exam" value="exam" />
+                      </Picker>
+                    </View>
+                  </View>
 
-                <View style={styles.inputContainer}>
-                  <Text style={styles.inputLabel}>Type</Text>
-                  <View style={styles.pickerContainer}>
-                    <Picker
-                      selectedValue={gradeForm.type}
-                      onValueChange={handleTypeChange}
+                  <View style={styles.modalActions}>
+                    <TouchableOpacity
+                      style={styles.cancelButton}
+                      onPress={handleCloseModal}
                     >
-                      <Picker.Item label="Homework" value="homework" />
-                      <Picker.Item label="Test" value="test" />
-                      <Picker.Item label="Exam" value="exam" />
-                    </Picker>
+                      <Text style={styles.cancelButtonText}>Cancel</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.saveButton} onPress={handleAddGrade}>
+                      <Text style={styles.saveButtonText}>Add Grade</Text>
+                    </TouchableOpacity>
                   </View>
                 </View>
-
-                <View style={styles.modalActions}>
-                  <TouchableOpacity
-                    style={styles.cancelButton}
-                    onPress={handleCloseModal}
-                  >
-                    <Text style={styles.cancelButtonText}>Cancel</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.saveButton} onPress={handleAddGrade}>
-                    <Text style={styles.saveButtonText}>Add Grade</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
+              
             </View>
           </View>
+          </TouchableWithoutFeedback>
         </Modal>
       )}
     </View>
@@ -561,17 +570,38 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   textInput: {
-    borderWidth: 1,
-    borderColor: COLORS.lightGray,
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    color: COLORS.darkGray,
+    flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: COLORS.white,
+  borderRadius: 12,
+  paddingHorizontal: 16,
+  height: 50,
+  fontSize: 16,
+  color: COLORS.darkGray,
+  elevation: 2,
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 1 },
+  shadowOpacity: 0.20,
+  shadowRadius: 2.22,
+    
   },
   pickerContainer: {
-    borderWidth: 1,
-    borderColor: COLORS.lightGray,
-    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+  },
+  pickerWrapper: {
+    flex: 1,
+    height: 50,
+    justifyContent: 'center',
+    marginLeft: 12,
   },
   modalActions: {
     flexDirection: 'row',
