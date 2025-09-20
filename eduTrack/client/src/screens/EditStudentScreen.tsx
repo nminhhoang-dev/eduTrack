@@ -175,6 +175,7 @@ const EditStudentScreen: React.FC<Props> = ({ navigation, route }) => {
                     selectedValue={formData.behavior}
                     onValueChange={(value) => updateField('behavior', value)}
                     style={styles.picker}
+                    itemStyle={{ height: 50, fontSize: 18 }}
                   >
                     <Picker.Item label="Excellent" value="excellent" />
                     <Picker.Item label="Good" value="good" />

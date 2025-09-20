@@ -126,6 +126,7 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
                 selectedValue={role}
                 onValueChange={setRole}
                 style={styles.picker}
+                itemStyle={{ height: 50, fontSize: 18 }}
               >
                 <Picker.Item label="Parent" value="parent" />
                 <Picker.Item label="Teacher" value="teacher" />
@@ -252,20 +253,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.darkGray,
   },
-  pickerWrapper: {
-    flex: 1,
-    height: 50,
-    justifyContent: 'center',
-  },
   picker: {
     flex: 1,
     height: 50,
-    color: COLORS.darkGray,
-  },
-  pickerItem: {
-    // iOS specific styling
-    height: 50,
-    fontSize: 16,
     color: COLORS.darkGray,
   },
   eyeButton: {
