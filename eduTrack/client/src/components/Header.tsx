@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS } from '../utils/constants';
+import { LinearGradient } from 'expo-linear-gradient';
+import { COLORS, GRADIENTS } from '../utils/constants';
 
 interface HeaderProps {
   title: string;
@@ -17,7 +18,12 @@ const Header: React.FC<HeaderProps> = ({
   rightElement 
 }) => {
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={GRADIENTS.header}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.container}
+    >
       <View style={styles.leftSection}>
         {showBack && (
           <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
@@ -33,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({
       <View style={styles.rightSection}>
         {rightElement}
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -42,18 +48,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.primary,
     paddingHorizontal: 16,
     paddingTop: 50,
     paddingBottom: 16,
-    elevation: 4,
+    elevation: 2,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowOpacity: 0.12,
+    shadowRadius: 3,
   },
   leftSection: {
     width: 40,

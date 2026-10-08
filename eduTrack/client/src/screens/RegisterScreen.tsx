@@ -12,8 +12,9 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from '../contexts/AuthContext';
-import { COLORS } from '../utils/constants';
+import { COLORS, GRADIENTS } from '../utils/constants';
 import Loading from '../components/Loading';
 import Header from '../components/Header';
 
@@ -72,7 +73,12 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={GRADIENTS.page}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.container}
+    >
       <Header
         title="Create Account"
         showBack
@@ -192,14 +198,13 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
   },
   keyboardContainer: {
     flex: 1,
@@ -217,32 +222,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.white,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: COLORS.border,
     marginBottom: 16,
     paddingHorizontal: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
   },
   pickerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.white,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: COLORS.border,
     marginBottom: 16,
     paddingHorizontal: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
   },
   inputIcon: {
     marginRight: 12,

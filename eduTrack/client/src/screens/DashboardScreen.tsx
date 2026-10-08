@@ -9,9 +9,10 @@ import {
   RefreshControl,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from '../contexts/AuthContext';
 import { useStudent } from '../contexts/StudentContext';
-import { COLORS } from '../utils/constants';
+import { COLORS, GRADIENTS } from '../utils/constants';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 
@@ -76,7 +77,12 @@ const DashboardScreen: React.FC<Props> = ({ navigation }) => {
   const stats = authState.user?.role === 'teacher' ? getTeacherStats() : null;
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={GRADIENTS.page}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.container}
+    >
       <Header
         title="Dashboard"
         rightElement={
@@ -93,14 +99,19 @@ const DashboardScreen: React.FC<Props> = ({ navigation }) => {
         }
       >
         {/* Welcome Section */}
-        <View style={styles.welcomeSection}>
+        <LinearGradient
+          colors={GRADIENTS.hero}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.welcomeSection}
+        >
           <Text style={styles.welcomeText}>
             Welcome back, {authState.user?.name}!
           </Text>
           <Text style={styles.roleText}>
             Role: {authState.user?.role?.toUpperCase()}
           </Text>
-        </View>
+        </LinearGradient>
 
         {/* Teacher Dashboard */}
         {authState.user?.role === 'teacher' && (
@@ -240,38 +251,31 @@ const DashboardScreen: React.FC<Props> = ({ navigation }) => {
 
         {studentState.isLoading && <Loading />}
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
   },
   content: {
     flex: 1,
   },
   welcomeSection: {
-    backgroundColor: COLORS.white,
     margin: 16,
     padding: 20,
-    borderRadius: 12,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
+    borderRadius: 20,
   },
   welcomeText: {
     fontSize: 20,
     fontWeight: '600',
-    color: COLORS.darkGray,
+    color: COLORS.white,
     marginBottom: 4,
   },
   roleText: {
     fontSize: 14,
-    color: COLORS.gray,
+    color: '#eef2ff',
   },
   statsContainer: {
     flexDirection: 'row',
@@ -285,12 +289,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     padding: 16,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: COLORS.border,
     alignItems: 'center',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
   },
   statNumber: {
     fontSize: 24,
@@ -330,12 +331,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: COLORS.border,
     marginBottom: 8,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
   },
   actionText: {
     flex: 1,
@@ -357,12 +355,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: COLORS.border,
     marginBottom: 8,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
   },
   studentInfo: {
     flex: 1,
